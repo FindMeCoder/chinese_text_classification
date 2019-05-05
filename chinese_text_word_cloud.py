@@ -63,7 +63,10 @@ for line in content:
     except:
         print(line)
         continue
+  
     
+    
+
 matplotlib.rcParams['figure.figsize'] = (10.0, 8.0)
 words_df=pd.DataFrame({'segment':segment})
 #words_df.head()

@@ -66,10 +66,43 @@ for sentence in sentences:
     out.write(str(sentence.encode('utf8')+b"\n"))
 print ("done!")
 
-from gensim.models import FastText
-
-import FastText as ff
-
-classifier = train_supervised("train_data.txt")
+import fasttext
+classifier = fasttext.supervised('train_data.txt', 'classifier.model', label_prefix='__label__')
 
 
+#对模型效果进行评估
+result = classifier.test('train_data.txt')
+print ('P@1:', result.precision)
+print ('R@1:', result.recall)
+print ('Number of examples:', result.nexamples)
+
+#实际预测
+label_to_cate = {1:'technology', 2:'car', 3:'entertainment', 4:'military', 5:'sports'}
+
+texts = ['中新网 日电 2018 预赛 亚洲区 强赛 中国队 韩国队 较量 比赛 上半场 分钟 主场 作战 中国队 率先 打破 场上 僵局 利用 角球 机会 大宝 前点 攻门 得手 中国队 领先']
+labels = classifier.predict(texts)
+print (labels)
+print( label_to_cate[int(labels[0][0])])
+
+
+
+#Top K 个预测结果
+labels = classifier.predict(texts, k=3)
+print (labels)
+
+import fasttext
+
+# Skipgram model
+model = fasttext.skipgram('unsupervised_train_data.txt', 'model')
+print (model.words )
+
+# CBOW model
+model = fasttext.cbow('unsupervised_train_data.txt', 'model')
+print (model.words)
+
+#对比gensim的word2vec
+
+model = Word2Vec(sentences, size=100, window=5, min_count=5, workers=4)
+model.save("gensim_word2vec.model")
+model.wv['赛季']
+model.wv.most_similar('赛季') 

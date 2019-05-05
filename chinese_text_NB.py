@@ -108,7 +108,7 @@ print(precision_score(y,stratifiedkfold(vec.transform(x),np.array(y),NB),average
 
 #print precision_score(y, stratifiedkfold_cv(vec.transform(x),np.array(y),NB), average='macro')
 
-        
+
     
     
 
